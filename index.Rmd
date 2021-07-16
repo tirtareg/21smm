@@ -1,5 +1,5 @@
 ---
-title: "SBMPTN 2021"
+title: "SMMPTN 2021"
 author: "Subbagian Registrasi"
 output: 
   flexdashboard::flex_dashboard:
@@ -53,7 +53,7 @@ valueBox(
 
 valueBox(
   value = paste(format(nrow(db), big.mark = " "), "", sep = " "),
-  caption = "Lulus SBMPTN",
+  caption = "Lulus SMMPTN",
   icon = "fas fa-clipboard-check",
   color = "purple"
 )
@@ -88,19 +88,6 @@ valueBox(
 )
 ```
 
-### kip {.value-box}
-
-```{r}
-data <- filter(db, beasiswa == "KIP")
-valueBox(
-  value = paste(format(nrow(data), big.mark = " "), " (", 
-                round(nrow(data)/nrow(db)*100, 0), "%)",
-                sep = ""),
-  caption = "Pendaftar KIP",
-  icon = "fas fa-hand-holding-usd",
-  color = "grey"
-)
-```
 
 Row
 ---
@@ -127,7 +114,7 @@ valueBox(
   value = paste(format(belum, big.mark = " "), " (", 
                 round(belum/nrow(db) * 100, 0), "% )",
                 sep = " "),
-  caption = "Tidak Registrasi",
+  caption = "Belum Registrasi",
   icon = "fas fa-file-upload",
   color = "brown"
 )
@@ -251,7 +238,7 @@ Row
 ### **Statistik Keketatan Program Studi**
 
 ```{r}
-data <- read_excel("G:/My Drive/#PMB/2021/02_SBMPTN/registrasi/Statistik_Keketatan_Prodi.xlsx")
+data <- read_excel("G:/My Drive/#PMB/2021/03_SMMPTN/registrasi/Statistik_Keketatan_Prodi.xlsx")
 data <- data[,-2]
 
 names(data) <- c("No", "Program Studi", "Peminat", "Diterima", "Keketatan (%)",
@@ -264,55 +251,7 @@ kable(data, row.names = F) %>%
 
 ```
 
-Row
----
 
-### **Sebaran Nilai UTBK calon mahasiswa Untirta**
-```{r echo=FALSE, message=FALSE, warning=FALSE, fig.height=10, fig.width=8}
-raw <- read_excel("G:/My Drive/Dian/R/Siti Arita Novia/sbmptn.xlsx")
-n = nrow(raw)
-
-par(mar=c(5,15,4,2))
-
-plot(raw$RATAAN, raw$NO, ylim = c(0.5, max(raw$NO)+2), 
-     xlim = c(min(raw$MIN-5), max(raw$MAX)+5), 
-     type = "p", pch = 20,
-     yaxt="n", ylab = "",
-     xlab = "Sebaran Nilai UTBK 2021")
-
-
-axis(2, at = raw$NO + 0.8, labels = raw$`NAMA PRODI`, tick = FALSE, outer = F,
-     las = 2, hadj = 1, padj = 1, cex.axis = 0.7)
-
-for (i in 1:n) {
-  segments(raw$q1[i], raw$NO[i] - 0.5, raw$q3[i], raw$NO[i] - 0.5)
-  segments(raw$q1[i], raw$NO[i] + 0.5, raw$q3[i], raw$NO[i] + 0.5)
-  segments(raw$q1[i], raw$NO[i] - 0.5, raw$q1[i], raw$NO[i] + 0.5)
-  segments(raw$q3[i], raw$NO[i] - 0.5, raw$q3[i], raw$NO[i] + 0.5)
-  segments(raw$MIN[i], raw$NO[i] - 0.5, raw$MIN[i], raw$NO[i] + 0.5)
-  segments(raw$MAX[i], raw$NO[i] - 0.5, raw$MAX[i], raw$NO[i] + 0.5)
-  segments(raw$MIN[i], raw$NO[i], raw$q1[i], raw$NO[i])
-  segments(raw$q3[i], raw$NO[i], raw$MAX[i], raw$NO[i])
-}
-
-segments(298, 65, 302, 65)
-segments(298, 75, 302, 75)
-segments(300, 65, 300, 67)
-segments(300, 73, 300, 75)
-
-segments(298, 65, 302, 65)
-segments(298, 73, 302, 73)
-segments(298, 67, 298, 73)
-segments(302, 67, 302, 73)
-
-points(300, 70, pch = 20)
-
-text(305,70, "Rataan", cex = 0.8, pos = 4, offset = 0.1)
-text(305,65, "Min", cex = 0.8, pos = 4, offset = 0.1)
-text(305,75, "Max", cex = 0.8, pos = 4, offset = 0.1)
-text(300,77, "Ket:", cex = 0.8, pos = 3, offset = 0.1)
-
-```
 
 ### **Camaba berdasarkan Provinsi asal**
 
@@ -382,7 +321,7 @@ data$pers_sudah <- round(data$sudah / data$lulus * 100, 0)
 data$pers_belum <- round(data$belum / data$lulus * 100, 0)
 data$pers_lulus <- round(data$lulus / data$pendaftar * 100, 0)
 data <- data[,c(1:3, 9, 4, 5, 7, 8, 6)]
-names(data) <- c("Fakultas", "Peminat", "Lulus", "% Lulus","Sudah", "Tidak", "Sudah (%)", "Tidak (%)", "Diterima")
+names(data) <- c("Fakultas", "Peminat", "Lulus", "% Lulus","Sudah", "Belum", "Sudah (%)", "Belum (%)", "Diterima")
 kable(data) %>%
   kable_styling(bootstrap_options = "striped", full_width = F,
                 latex_options = "scale_down") %>%
@@ -411,7 +350,7 @@ data$pers_belum <- round(data$belum / data$lulus * 100, 0)
 data$pers_lulus <- round(data$lulus / data$pendaftar * 100, 0)
 
 data <- data[,c(1:3, 9, 4, 5, 7, 8, 6)]
-names(data) <- c("Fakultas/Program Studi", "Peminat", "Lulus", "% Lulus", "Sudah", "Tidak", "Sudah (%)", "Tidak (%)", "Diterima")
+names(data) <- c("Fakultas/Program Studi", "Peminat", "Lulus", "% Lulus", "Sudah", "Belum", "Sudah (%)", "Belum (%)", "Diterima")
 
 kable(data, row.names = F) %>%
   kable_styling(bootstrap_options = "striped", full_width = F,
@@ -434,7 +373,7 @@ Camaba Registrasi
 row
 ---
 
-### Berikut adalah daftar nama calon mahasiswa baru Universitas Sultan Ageng Tirtayasa yang melakukan registrasi ulang di admisi.untirta.ac.id (**gunakan Search untuk pencarian cepat**).
+### Berikut adalah daftar nama calon mahasiswa baru Universitas Sultan Ageng Tirtayasa jalur SMMPTN yang melakukan registrasi ulang di admisi.untirta.ac.id sampai dengan `r format(Sys.time(), "%d %B %Y")` pukul `r format(Sys.time(), "%X")` (**gunakan Search untuk pencarian cepat**).
 
 ```{r}
 # `r format(Sys.time(), "%d %B %Y")` pukul `r format(Sys.time(), "%X")`
@@ -457,7 +396,7 @@ Mahasiswa Baru
 row
 ---
 
-### Berikut adalah daftar nama mahasiswa baru Universitas Sultan Ageng Tirtayasa jalur SBMPTN (**gunakan Search untuk pencarian cepat**).
+### Berikut adalah daftar nama mahasiswa baru Universitas Sultan Ageng Tirtayasa jalur SMMPTN sampai dengan `r format(Sys.time(), "%d %B %Y")` pukul `r format(Sys.time(), "%X")` (**gunakan Search untuk pencarian cepat**).
 
 ```{r}
 # `r format(Sys.time(), "%d %B %Y")` pukul `r format(Sys.time(), "%X")`
